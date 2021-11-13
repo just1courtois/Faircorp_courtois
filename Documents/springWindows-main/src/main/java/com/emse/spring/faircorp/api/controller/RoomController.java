@@ -1,5 +1,6 @@
 package com.emse.spring.faircorp.api.controller;
 
+import com.emse.spring.faircorp.api.dto.BuildingDto;
 import com.emse.spring.faircorp.api.dto.HeaterDto;
 import com.emse.spring.faircorp.api.dto.RoomDto;
 import com.emse.spring.faircorp.api.dto.WindowDto;
@@ -33,73 +34,42 @@ public class RoomController {
 
     }
 
+
     @GetMapping // (5)
     public List<RoomDto> findAll() {
         return roomDao.findAll().stream().map(RoomDto::new).collect(Collectors.toList());  // (6)
     }
 
-/*
-    @PostMapping // (8)
+
+
+
+    @PostMapping // (8)  créer une room
     public RoomDto create(@RequestBody RoomDto dto) {
-        // WindowDto must always contain the window room
+        // RoomDto must always contain the room building
         Building building = buildingDao.getById(dto.getBuildingId());
         Room room = null;
         // On creation id is not defined
         if (dto.getId() == null) {
-            room = roomDao.save(new Room(dto.getName(), building));
-        }
-        else {
+            room = roomDao.save(new Room(dto.getFloor(), dto.getName(), building, dto.getCurrent_temperature(), dto.getTarget_temperature() ));
+        } else {
             room = roomDao.getById(dto.getId());  // (9)
         }
         return new RoomDto(room);
     }
-*/
 
-    @GetMapping(path = "/api/rooms/{id}")
+    @GetMapping(path = "/{id}")
     public RoomDto findById(@PathVariable Long id) {
         return roomDao.findById(id).map(RoomDto::new).orElse(null); // (7)
     }
 
-    @DeleteMapping(path = "/api/rooms/{id}")
+
+
+    @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable Long id) {
         roomDao.deleteRoom(id);
     }
 
-    @PutMapping(path = "/api/rooms/{room_id}/switchWindowsOn")
-    public RoomDto switchWindowsStatusToOpen(@PathVariable Long room_id) {
-        List<Window> windows = roomDao.findAllWindows(room_id);
-        for (Window window : windows) {
-            window.setWindowStatus(window.getWindowStatus() == WindowStatus.CLOSED? WindowStatus.OPEN: WindowStatus.OPEN);
-        }
-        return new RoomDto((Room) windows);
-    }
 
-    @PutMapping(path = "/api/rooms/{room_id}/switchWindowsOff")
-    public RoomDto switchWindowsStatusToCLosed(@PathVariable Long room_id) {
-        List<Window> windows = roomDao.findAllWindows(room_id);
-        for (Window window : windows) {
-            window.setWindowStatus(window.getWindowStatus() == WindowStatus.OPEN? WindowStatus.CLOSED: WindowStatus.CLOSED);
-        }
-        return new RoomDto((Room) windows);
-    }
-
-    @PutMapping(path = "/api/rooms/{room_id}/switchHeaterOn")
-    public RoomDto switchHeatersStatusToOn(@PathVariable Long room_id) {
-        List<Heater> heaters = roomDao.findAllHeaters(room_id);
-        for (Heater heater : heaters) {
-            heater.setHeaterStatus(heater.getHeaterStatus() == HeaterStatus.OFF ? HeaterStatus.ON: HeaterStatus.ON);
-        }
-        return new RoomDto((Room) heaters);
-    }
-
-    @PutMapping(path = "/rooms/{room_id}/switchHeaterOff")
-    public RoomDto switchHeatersStatusToOff(@PathVariable Long room_id) {
-        List<Heater> heaters = roomDao.findAllHeaters(room_id);
-        for (Heater heater : heaters) {
-            heater.setHeaterStatus(heater.getHeaterStatus() == HeaterStatus.ON ? HeaterStatus.OFF: HeaterStatus.OFF);
-        }
-        return new RoomDto((Room) heaters);
-    }
 
 
 

@@ -11,5 +11,7 @@ public interface RoomDao extends JpaRepository<Room, Long>, RoomDaoCustom{
     @Query("select r from Room r where r.name=:name")
     Room findByName(@Param("name") String name);
 
+
+
 }
 

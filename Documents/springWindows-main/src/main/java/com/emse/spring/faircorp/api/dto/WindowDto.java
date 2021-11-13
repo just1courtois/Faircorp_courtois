@@ -1,6 +1,8 @@
 package com.emse.spring.faircorp.api.dto;
 import com.emse.spring.faircorp.model.*;
 
+import java.util.List;
+
 public class WindowDto {
     private Long id;
     private String name;
@@ -8,7 +10,7 @@ public class WindowDto {
     private String roomName;
     private Long roomId;
 
-    public WindowDto() {
+    public WindowDto(List<Window> windows) {
     }
 
     public WindowDto(Window window) {

@@ -3,6 +3,8 @@ package com.emse.spring.faircorp.api.dto;
 import com.emse.spring.faircorp.model.Heater;
 import com.emse.spring.faircorp.model.HeaterStatus;
 
+import java.util.List;
+
 public class HeaterDto {
     private Long id;
     private String name;
@@ -11,7 +13,7 @@ public class HeaterDto {
     private String roomName;
     private Long roomId;
 
-    public HeaterDto(){}
+    public HeaterDto(List<Heater> heaters){}
 
     public HeaterDto(Heater heater){
         this.id = heater.getId();

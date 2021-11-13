@@ -34,6 +34,30 @@ public class WindowController {
         return windowDao.findById(id).map(WindowDto::new).orElse(null); // (7)
     }
 
+    @GetMapping(path = "/room/{room_id}")
+    public List<WindowDto> findByRoom(@PathVariable Long room_id) {
+        return windowDao.findWindowsByRoom(room_id).stream().map(WindowDto::new).collect(Collectors.toList()); // (7)
+    }
+
+
+    @PutMapping(path = "/switchWindowsOpen/{room_id}")
+    public WindowDto switchWindowsStatusToOpen(@PathVariable Long room_id) {
+        List<Window> windows = windowDao.findWindowsByRoom(room_id);
+        for (Window window : windows) {
+            window.setWindowStatus(window.getWindowStatus() == WindowStatus.CLOSED? WindowStatus.OPEN: WindowStatus.OPEN);
+        }
+        return new WindowDto(windows);
+    }
+
+    @PutMapping(path = "/switchWindowsOn/{room_id}")
+    public WindowDto switchWindowsStatusToClose(@PathVariable Long room_id) {
+        List<Window> windows = windowDao.findWindowsByRoom(room_id);
+        for (Window window : windows) {
+            window.setWindowStatus(window.getWindowStatus() == WindowStatus.OPEN? WindowStatus.CLOSED: WindowStatus.CLOSED);
+        }
+        return new WindowDto(windows);
+    }
+
     @PutMapping(path = "/{id}/switch")
     public WindowDto switchStatus(@PathVariable Long id) {
         Window window = windowDao.findById(id).orElseThrow(IllegalArgumentException::new);
@@ -59,6 +83,6 @@ public class WindowController {
 
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable Long id) {
-        windowDao.deleteById(id);
+        windowDao.deleteWindow(id);
     }
 }

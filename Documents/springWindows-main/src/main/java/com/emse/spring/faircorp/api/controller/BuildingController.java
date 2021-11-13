@@ -1,11 +1,9 @@
 package com.emse.spring.faircorp.api.controller;
 
 import com.emse.spring.faircorp.api.dto.BuildingDto;
-import com.emse.spring.faircorp.api.dto.RoomDto;
-import com.emse.spring.faircorp.api.dto.WindowDto;
 import com.emse.spring.faircorp.dao.BuildingDao;
+import com.emse.spring.faircorp.dao.RoomDao;
 import com.emse.spring.faircorp.model.Building;
-import com.emse.spring.faircorp.model.Room;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -17,10 +15,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class BuildingController {
     private final BuildingDao buildingDao;
+    private final RoomDao roomDao;
 
 
-    public BuildingController(BuildingDao buildingDao) {
+
+    public BuildingController(BuildingDao buildingDao, RoomDao roomDao) {
         this.buildingDao = buildingDao;
+        this.roomDao = roomDao;
     }
 
     @GetMapping // (5)
@@ -28,7 +29,7 @@ public class BuildingController {
         return buildingDao.findAll().stream().map(BuildingDto::new).collect(Collectors.toList());  // (6)
     }
 
-    @GetMapping(path = "/api/buildings/{building_id}")
+    @GetMapping(path = "/{building_id}")
     public BuildingDto findById(@PathVariable Long building_id) {
         return buildingDao.findById(building_id).map(BuildingDto::new).orElse(null); // (7)
     }
@@ -45,10 +46,10 @@ public class BuildingController {
         return new BuildingDto(building);
     }
 
-    @DeleteMapping(path = "api/buildings/{building_id}")
-    public void delete(@PathVariable Long id) {
 
-        buildingDao.deleteById(id);
+    @DeleteMapping(path = "/{building_id}")
+    public void delete(@PathVariable Long building_id) {
+        buildingDao.deleteByBuildingId(building_id);
     }
 
 

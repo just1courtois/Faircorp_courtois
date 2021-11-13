@@ -15,7 +15,7 @@ public class Building {
     @Column(nullable = false, length = 255)// (4)
     private String name;
 
-    @OneToMany(mappedBy = "building")  //Parent of rooms
+    @OneToMany(mappedBy = "building", orphanRemoval = true)  //Parent of rooms
     private Set<Room> rooms;
 
     public Building(){

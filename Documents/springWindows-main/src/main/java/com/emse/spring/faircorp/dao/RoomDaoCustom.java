@@ -7,10 +7,9 @@ import com.emse.spring.faircorp.model.Window;
 import java.util.List;
 
 public interface RoomDaoCustom {
+
     List<Room> findRoom(Long id);
-    List<Window> findAllWindows(Long room_id);
-    List<Heater> findAllHeaters(Long room_id);
-    void deleteByBuildingId(Long building_id);
     void deleteRoom(Long room_id);
+
 
 }

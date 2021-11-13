@@ -9,4 +9,8 @@ import java.util.List;
 public interface BuildingDaoCustom {
     List<Window> findAllWindows(Long id);
     List<Heater> findAllHeaters(Long id);
+    List<Room> findRooms(Long id);
+    void deleteByBuildingId(Long building_id);
+
+
 }

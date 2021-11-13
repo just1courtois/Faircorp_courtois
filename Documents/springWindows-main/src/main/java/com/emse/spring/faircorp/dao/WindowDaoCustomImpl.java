@@ -1,5 +1,6 @@
 package com.emse.spring.faircorp.dao;
 
+import com.emse.spring.faircorp.model.Heater;
 import com.emse.spring.faircorp.model.Window;
 import com.emse.spring.faircorp.model.WindowStatus;
 
@@ -22,13 +23,25 @@ public class WindowDaoCustomImpl implements WindowDaoCustom {
                 .getResultList();
     }
 
+    @Override
+    public List<Window> findWindowsByRoom(Long id) {
+        String jpql = "select w from Window w where w.room.id=:id";
+        return em.createQuery(jpql,Window.class)
+                .setParameter("id",id)
+                .getResultList();
+    }
+
 
     @Override
-    public void deleteByRoom(Long id) {
-        String jpql = "delete from Window w where room_id = :room_id";
+    public void deleteWindow(Long id) {
+        String jpql = "delete from Window w where id = :window_id";
         em.createQuery(jpql)
-                .setParameter("room_id", id)
+                .setParameter("window_id", id)
                 .executeUpdate();
     }
 
+    @Override
+    public void openAllWindows(Long id) {
+
+    }
 }

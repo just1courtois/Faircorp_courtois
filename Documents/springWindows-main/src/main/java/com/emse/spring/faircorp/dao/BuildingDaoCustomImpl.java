@@ -1,5 +1,6 @@
 package com.emse.spring.faircorp.dao;
 import com.emse.spring.faircorp.model.Heater;
+import com.emse.spring.faircorp.model.Room;
 import com.emse.spring.faircorp.model.Window;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,5 +23,25 @@ public class BuildingDaoCustomImpl implements BuildingDaoCustom{
         return em.createQuery(jpql, Heater.class)
                 .setParameter("id", id)
                 .getResultList();
+    }
+
+
+
+    @Override
+    public List<Room> findRooms(Long id) {
+        String jpql="select r from Room r where r.building.id=:id";
+        return em.createQuery(jpql, Room.class)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
+    @Override
+    public void deleteByBuildingId(Long building_id){
+
+        String jpqlb = "delete from Building b where id=:id";
+        em.createQuery(jpqlb)
+                .setParameter("id", building_id)
+                .executeUpdate();
+
     }
 }
