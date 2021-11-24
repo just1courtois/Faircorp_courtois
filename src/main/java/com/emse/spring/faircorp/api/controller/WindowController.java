@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
             return new WindowDto(windows);
         }
 
-       
+        @CrossOrigin
         @PutMapping(path = "/{id}/switch")
         public WindowDto switchStatus(@PathVariable Long id) {
             Window window = windowDao.findById(id).orElseThrow(IllegalArgumentException::new);
