@@ -1,6 +1,7 @@
 package com.emse.spring.faircorp.api.controller;
 
 import com.emse.spring.faircorp.api.dto.WindowDto;
+import com.emse.spring.faircorp.api.requests.WindowRequest;
 import com.emse.spring.faircorp.dao.RoomDao;
 import com.emse.spring.faircorp.dao.WindowDao;
 import com.emse.spring.faircorp.model.Room;
@@ -81,6 +82,22 @@ import java.util.stream.Collectors;
             }
             return new WindowDto(window);
         }
+
+    @PostMapping(path = "/createByRoom/{id}") // (8)
+    public WindowRequest createByRoom(@RequestBody WindowRequest dto, @PathVariable Long id) {
+        // WindowDto must always contain the window room
+        Room room = roomDao.getById(id);
+        Window window = null;
+        dto.setId(null);
+        if (dto.getId() == null) {
+            window = windowDao.save(new Window(dto.getName(), dto.getWindowStatus(), room));
+        }
+        else {
+            window = windowDao.getById(dto.getId());  // (9)
+            window.setWindowStatus(dto.getWindowStatus());
+        }
+        return new WindowRequest(window);
+    }
 
         @DeleteMapping(path = "/{id}")
         public void delete(@PathVariable Long id) {

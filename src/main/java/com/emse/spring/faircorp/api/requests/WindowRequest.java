@@ -1,27 +1,28 @@
-package com.emse.spring.faircorp.api.dto;
+package com.emse.spring.faircorp.api.requests;
 import com.emse.spring.faircorp.model.*;
 
 import java.util.List;
 
-public class WindowDto {
+public class WindowRequest {
     private Long id;
     private String name;
     private WindowStatus windowStatus;
     private String roomName;
-    private Long roomId;
+    //private Long roomId;
 
-    public WindowDto() {
+    public WindowRequest() {
     }
 
-    public WindowDto(List<Window> windows) {
+
+    public WindowRequest(List<Window> windows) {
     }
 
-    public WindowDto(Window window) {
+    public WindowRequest(Window window) {
         this.id = window.getId();
         this.name = window.getName();
         this.windowStatus = window.getWindowStatus();
         this.roomName = window.getRoom().getName();
-        this.roomId = window.getRoom().getId();
+        //this.roomId = window.getRoom().getId();
     }
 
     public Long getId() {
@@ -56,11 +57,11 @@ public class WindowDto {
         this.roomName = roomName;
     }
 
-    public Long getRoomId() {
+    /*public Long getRoomId() {
         return roomId;
     }
 
     public void setRoomId(Long roomId) {
         this.roomId = roomId;
-    }
+    }*/
 }
