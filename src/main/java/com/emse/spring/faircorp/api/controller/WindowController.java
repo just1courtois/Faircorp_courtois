@@ -41,8 +41,6 @@ import java.util.stream.Collectors;
             return windowDao.findWindowsByRoom(room_id).stream().map(WindowDto::new).collect(Collectors.toList()); // (7)
         }
 
-
-        @CrossOrigin
         @PutMapping(path = "/switchWindowsOpen/{room_id}")
         public WindowDto switchWindowsStatusToOpen(@PathVariable Long room_id) {
             List<Window> windows = windowDao.findWindowsByRoom(room_id);
@@ -61,7 +59,6 @@ import java.util.stream.Collectors;
             return new WindowDto(windows);
         }
 
-        @CrossOrigin
         @PutMapping(path = "/{id}/switch")
         public WindowDto switchStatus(@PathVariable Long id) {
             Window window = windowDao.findById(id).orElseThrow(IllegalArgumentException::new);
