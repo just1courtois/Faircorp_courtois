@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
             }
             return new WindowDto(window);
         }
-
+    @CrossOrigin
     @PostMapping(path = "/createByRoom/{id}") // (8)
     public WindowRequest createByRoom(@RequestBody WindowRequest dto, @PathVariable Long id) {
         // WindowDto must always contain the window room
