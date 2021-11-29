@@ -13,10 +13,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+
 @RestController // (1)
     @RequestMapping("/api/windows") // (2)
     @Transactional // (3)
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public class WindowController {
         private final WindowDao windowDao;
         private final RoomDao roomDao;
