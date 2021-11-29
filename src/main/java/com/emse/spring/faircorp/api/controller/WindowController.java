@@ -85,6 +85,7 @@ import java.util.stream.Collectors;
         }
     
         @PostMapping(path = "/createByRoom/{id}") // (8)
+        @CrossOrigin
         public WindowRequest createByRoom(@RequestBody WindowRequest dto, @PathVariable Long id) {
             // WindowDto must always contain the window room
             Room room = roomDao.getById(id);
