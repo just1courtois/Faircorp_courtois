@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 
 @RestController // (1)
-    @RequestMapping("/api/windows") // (2)
-    @Transactional // (3)
-    @CrossOrigin
+@RequestMapping("/api/windows") // (2)
+@Transactional // (3)
+@CrossOrigin
     public class WindowController {
         private final WindowDao windowDao;
         private final RoomDao roomDao;
@@ -83,25 +83,25 @@ import java.util.stream.Collectors;
             }
             return new WindowDto(window);
         }
-    @CrossOrigin
-    @PostMapping(path = "/createByRoom/{id}") // (8)
-    public WindowRequest createByRoom(@RequestBody WindowRequest dto, @PathVariable Long id) {
-        // WindowDto must always contain the window room
-        Room room = roomDao.getById(id);
-        Window window = null;
-        dto.setId(null);
-        if (dto.getId() == null) {
-            window = windowDao.save(new Window(dto.getName(), dto.getWindowStatus(), room));
+    
+        @PostMapping(path = "/createByRoom/{id}") // (8)
+        public WindowRequest createByRoom(@RequestBody WindowRequest dto, @PathVariable Long id) {
+            // WindowDto must always contain the window room
+            Room room = roomDao.getById(id);
+            Window window = null;
+            dto.setId(null);
+            if (dto.getId() == null) {
+                window = windowDao.save(new Window(dto.getName(), dto.getWindowStatus(), room));
+            }
+            else {
+                window = windowDao.getById(dto.getId());  // (9)
+                window.setWindowStatus(dto.getWindowStatus());
+            }
+            return new WindowRequest(window);
         }
-        else {
-            window = windowDao.getById(dto.getId());  // (9)
-            window.setWindowStatus(dto.getWindowStatus());
-        }
-        return new WindowRequest(window);
-    }
 
-        @DeleteMapping(path = "/{id}")
-        public void delete(@PathVariable Long id) {
-            windowDao.deleteWindow(id);
-        }
+            @DeleteMapping(path = "/{id}")
+            public void delete(@PathVariable Long id) {
+                windowDao.deleteWindow(id);
+            }
     }
