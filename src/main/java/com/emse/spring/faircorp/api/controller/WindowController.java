@@ -68,6 +68,13 @@ import java.util.stream.Collectors;
             return new WindowDto(window);
         }
 
+        @PutMapping(path = "/rename/{id}/{name}")
+        public WindowDto rename(@PathVariable Long id, String name) {
+            Window window = windowDao.findById(id).orElseThrow(IllegalArgumentException::new);
+            window.setName(name);
+            return new WindowDto(window);
+        }
+
         @PostMapping // (8)
         public WindowDto create(@RequestBody WindowDto dto) {
             // WindowDto must always contain the window room
