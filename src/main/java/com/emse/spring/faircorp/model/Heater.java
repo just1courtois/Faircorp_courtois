@@ -38,6 +38,13 @@ public class Heater {
         this.room = room;
     }
 
+    public Heater(String name, Long power, HeaterStatus status, Room room) {
+        this.heaterStatus = status;
+        this.name = name;
+        this.room = room;
+        this.power = power;
+    }
+
     public Long getId() {
         return this.id;
     }

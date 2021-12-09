@@ -1,7 +1,10 @@
 package com.emse.spring.faircorp.api.controller;
 
 import com.emse.spring.faircorp.api.dto.RoomDto;
+import com.emse.spring.faircorp.api.dto.WindowDto;
 import com.emse.spring.faircorp.api.requests.HeaterRequest;
+import com.emse.spring.faircorp.api.requests.RoomRequest;
+import com.emse.spring.faircorp.api.requests.WindowRequest;
 import com.emse.spring.faircorp.dao.BuildingDao;
 import com.emse.spring.faircorp.dao.HeaterDao;
 import com.emse.spring.faircorp.dao.RoomDao;
@@ -59,6 +62,30 @@ public class RoomController {
     public RoomDto findById(@PathVariable Long id) {
         return roomDao.findById(id).map(RoomDto::new).orElse(null); // (7)
     }
+
+    @PutMapping(path = "/rename/{id}/{name}")
+    public RoomDto rename(@PathVariable Long id, String name) {
+        Room room = roomDao.findById(id).orElseThrow(IllegalArgumentException::new);
+        room.setName(name);
+        return new RoomDto(room);
+    }
+
+    @PostMapping(path = "/createByBuilding/{id}") // (8)
+    @CrossOrigin
+    public RoomRequest createByBuilding(@RequestBody RoomRequest dto, @PathVariable Long id) {
+
+        Building building = buildingDao.getById(id);
+        Room room = null;
+        dto.setId(null);
+        if (dto.getId() == null) {
+            room = roomDao.save(new Room(dto.getFloor(), dto.getName(), building, dto.getCurrent_temperature(), dto.getTarget_temperature()));
+        }
+        else {
+            room = roomDao.getById(dto.getId());  // (9)
+        }
+        return new RoomRequest(room);
+    }
+
 
 
 

@@ -77,7 +77,7 @@ import java.util.stream.Collectors;
             Heater heater = null;
             // On creation id is not defined
             if (dto.getId() == null) {
-                heater = heaterDao.save(new Heater(dto.getName(), dto.getHeaterStatus(), room));
+                heater = heaterDao.save(new Heater(dto.getName(),dto.getPower(), dto.getHeaterStatus(), room));
             }
             else {
                 heater = heaterDao.getById(dto.getId());  // (9)
@@ -108,6 +108,7 @@ import java.util.stream.Collectors;
                 heater.setHeaterStatus(dto.getHeaterStatus());
             }
             return new HeaterRequest(heater);
+
         }
 
         @DeleteMapping(path = "/{id}")
