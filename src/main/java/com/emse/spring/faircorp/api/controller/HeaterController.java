@@ -2,6 +2,7 @@ package com.emse.spring.faircorp.api.controller;
 
 import com.emse.spring.faircorp.api.dto.HeaterDto;
 import com.emse.spring.faircorp.api.dto.WindowDto;
+import com.emse.spring.faircorp.api.requests.HeaterRequest;
 import com.emse.spring.faircorp.dao.HeaterDao;
 import com.emse.spring.faircorp.dao.RoomDao;
 import com.emse.spring.faircorp.model.*;
@@ -85,6 +86,29 @@ import java.util.stream.Collectors;
             return new HeaterDto(heater);
         }
 
+        @PutMapping(path = "/rename/{id}/{name}")
+        public HeaterDto rename(@PathVariable Long id, String name) {
+            Heater heater = heaterDao.findById(id).orElseThrow(IllegalArgumentException::new);
+            heater.setName(name);
+            return new HeaterDto(heater);
+        }
+
+        @PostMapping(path = "/createByRoom/{id}") // (8)
+        @CrossOrigin
+        public HeaterRequest createByRoom(@RequestBody HeaterRequest dto, @PathVariable Long id) {
+            // WindowDto must always contain the window room
+            Room room = roomDao.getById(id);
+            Heater heater = null;
+            dto.setId(null);
+            if (dto.getId() == null) {
+                heater = heaterDao.save(new Heater(dto.getName(), dto.getHeaterStatus(), room));
+            }
+            else {
+                heater = heaterDao.getById(dto.getId());  // (9)
+                heater.setHeaterStatus(dto.getHeaterStatus());
+            }
+            return new HeaterRequest(heater);
+        }
 
         @DeleteMapping(path = "/{id}")
         public void delete(@PathVariable Long id) {
